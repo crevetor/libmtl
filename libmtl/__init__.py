@@ -51,6 +51,9 @@ def get_abrev(name):
     return ret
 
 def get_name(abr):
+    """
+    Given an abbreviation, return the name or "Unknown"
+    """
     try:
         return arr_abrev[abr]
     except KeyError:
