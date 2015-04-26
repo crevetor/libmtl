@@ -87,7 +87,10 @@ def getArrondissementCode(longitude, latitude):
     """
     r = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=%s,%s' % (latitude, longitude))
     addresses = r.json()
-    arr = [ a['formatted_address'].split(',')[0] for a in addresses['results'] if 'sublocality' in a['types'] ].pop()
+    try:
+        arr = [ a['formatted_address'].split(',')[0] for a in addresses['results'] if 'sublocality' in a['types'] ].pop()
+    except:
+        arr = "Rivière-des-Prairies-Pointe-aux-Trembles" 
         
     return get_abrev(arr)
 
