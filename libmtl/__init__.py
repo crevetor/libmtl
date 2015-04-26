@@ -1,3 +1,4 @@
+# coding=utf-8
 from Levenshtein import ratio
 
 arr_abrev = {'AC': 'Ahuntsic-Cartierville',
