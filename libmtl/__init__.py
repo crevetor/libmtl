@@ -81,4 +81,15 @@ def getZipcode(longitude, latitude):
     zipcode = [ extract_zipcode(a['formatted_address'])  for a in addresses['results'] if extract_zipcode(a['formatted_address'])  ].pop()
     return zipcode
 
+def getArrondissementCode(longitude, latitude):
+    """
+    Given coordonates, return the arrondissement name
+    """
+    r = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=%s,%s' % (latitude, longitude))
+    addresses = r.json()
+    arr = [ a['formatted_address'].split(',')[0] for a in addresses['results'] if 'sublocality' in a['types'] ].pop()
+        
+    return get_abrev(arr)
+
+
 
