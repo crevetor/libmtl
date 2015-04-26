@@ -1,5 +1,7 @@
 # coding=utf-8
 from Levenshtein import ratio
+import requests
+import re
 
 arr_abrev = {'AC': 'Ahuntsic-Cartierville',
              'AJ': 'Anjou',
@@ -59,3 +61,24 @@ def get_name(abr):
         return arr_abrev[abr]
     except KeyError:
         return "Unknown"
+
+def extract_zipcode(string):
+    """
+    Given a string, extract a zipcode if it's present in the string
+    """
+    zipsearch =re.compile(r'[A-Z]\d[A-Z] *\d[A-Z]\d')
+    if zipsearch.search(string):
+        return zipsearch.search(string).group()
+    else:
+        return False
+
+def getZipcode(longitude, latitude):
+    """
+    Given coordonates, return the zipcode
+    """
+    r = requests.get('https://maps.googleapis.com/maps/api/geocode/json?latlng=%s,%s' % (latitude, longitude))
+    addresses = r.json()
+    zipcode = [ extract_zipcode(a['formatted_address'])  for a in addresses['results'] if extract_zipcode(a['formatted_address'])  ].pop()
+    return zipcode
+
+
